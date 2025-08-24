@@ -104,7 +104,7 @@ Here's the **Windows usage section** to add to the README:
 ### **1. Download the setup script**
 
 ```powershell
-curl -O https://raw.githubusercontent.com/<your-repo>/setup-analytics-mcp.ps1
+curl -O https://raw.githubusercontent.com/paolobtl/google-analytics-mcp-installer/refs/heads/main/setup-analytics-mcp.ps1
 ```
 
 ### **2. Run with Application Default Credentials (recommended)**
