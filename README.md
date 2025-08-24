@@ -2,6 +2,27 @@
 
 Automated setup script to configure **Google Analytics MCP** for Gemini CLI.
 
+##### Table of Contents
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Usage](#usage)
+  - [1. Download the setup script](#1-download-the-setup-script)
+  - [2. Run with Application Default Credentials (recommended)](#2-run-with-application-default-credentials-recommended)
+  - [3. Run with Service Account JSON](#3-run-with-service-account-json)
+  - [4. Optional advanced arguments](#4-optional-advanced-arguments)
+  - [5. Verify Gemini MCP Setup](#5-verify-gemini-mcp-setup)
+- [Windows Usage](#windows-usage)
+  - [1. Download the setup script](#1-download-the-setup-script-1)
+  - [2. Run with Application Default Credentials (recommended)](#2-run-with-application-default-credentials-recommended-1)
+  - [3. Run with Service Account JSON](#3-run-with-service-account-json-1)
+  - [4. Optional arguments](#4-optional-arguments)
+  - [5. Verify Gemini MCP Setup](#5-verify-gemini-mcp-setup-1)
+- [macOS Notes](#macos-notes)
+- [Troubleshooting](#troubleshooting)
+- [Security Notes](#security-notes)
+- [License](#license)
+
+
 ---
 
 ## Features
@@ -74,6 +95,87 @@ You should see:
 ```
 🟢 analytics-mcp - Ready
 ```
+Here's the **Windows usage section** to add to the README:
+
+---
+
+## **Windows Usage**
+
+### **1. Download the setup script**
+
+```powershell
+curl -O https://raw.githubusercontent.com/<your-repo>/setup-analytics-mcp.ps1
+```
+
+### **2. Run with Application Default Credentials (recommended)**
+
+```powershell
+$env:GOOGLE_PROJECT_ID="my-project"
+.\setup-analytics-mcp.ps1
+```
+
+* Opens your browser for authentication.
+* Stores credentials automatically.
+* Configures Gemini MCP.
+
+---
+
+### **3. Run with Service Account JSON**
+
+```powershell
+$env:MODE="sa"
+$env:GOOGLE_PROJECT_ID="my-project"
+.\setup-analytics-mcp.ps1
+```
+
+* Creates a Service Account if missing.
+* Assigns **Analytics Viewer** role.
+* Generates and downloads a JSON key into `$HOME\keys`.
+* Configures Gemini MCP.
+
+---
+
+### **4. Optional arguments**
+
+| Environment Variable | Description                  | Example                                |
+| -------------------- | ---------------------------- | -------------------------------------- |
+| `SA_NAME`            | Custom Service Account name  | `$env:SA_NAME=\"custom-sa\"`           |
+| `KEY_DIR`            | Directory to store JSON keys | `$env:KEY_DIR=\"$HOME\\secrets\"`      |
+| `KEY_PATH`           | Full path to JSON key        | `$env:KEY_PATH=\"$HOME\\ga-key.json\"` |
+
+Example:
+
+```powershell
+$env:MODE="sa"
+$env:GOOGLE_PROJECT_ID="my-project"
+$env:SA_NAME="custom-sa"
+$env:KEY_DIR="$HOME\\secrets"
+.\setup-analytics-mcp.ps1
+```
+
+---
+
+### **5. Verify Gemini MCP Setup**
+
+```powershell
+gemini
+```
+
+Inside Gemini, run:
+
+```bash
+/mcp
+```
+
+You should see:
+
+```
+🟢 analytics-mcp - Ready
+```
+
+---
+
+Do you also want me to prepare a **combined cross-platform README** where macOS, Linux, and Windows instructions are integrated cleanly? It could make everything much easier to maintain.
 
 ---
 
@@ -106,6 +208,8 @@ gcloud auth application-default login --scopes="https://www.googleapis.com/auth/
 Then re-run the script.
 
 ---
+
+
 
 ## Security Notes
 
