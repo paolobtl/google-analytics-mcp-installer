@@ -68,7 +68,7 @@ GOOGLE_PROJECT_ID="my-project" ./setup-analytics-mcp.sh
 MODE=sa GOOGLE_PROJECT_ID="my-project" ./setup-analytics-mcp.sh
 ```
 
-### **4. Optional arguments**
+### **4. Optional arguments Linux**
 
 | Variable      | Description                                | Example |
 |--------------|--------------------------------------------|----------------------------|
@@ -135,7 +135,7 @@ $env:GOOGLE_PROJECT_ID="my-project"
 
 ---
 
-### **4. Optional arguments**
+### **4. Optional arguments Windows**
 
 | Environment Variable | Description                  | Example                                |
 | -------------------- | ---------------------------- | -------------------------------------- |
