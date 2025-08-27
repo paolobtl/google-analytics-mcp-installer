@@ -68,7 +68,7 @@ GOOGLE_PROJECT_ID="my-project" ./setup-analytics-mcp.sh
 MODE=sa GOOGLE_PROJECT_ID="my-project" ./setup-analytics-mcp.sh
 ```
 
-### **4. Optional advanced arguments**
+### **4. Optional arguments**
 
 | Variable      | Description                                | Example |
 |--------------|--------------------------------------------|----------------------------|
