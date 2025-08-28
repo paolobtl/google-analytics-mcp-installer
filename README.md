@@ -175,10 +175,6 @@ You should see:
 
 ---
 
-Do you also want me to prepare a **combined cross-platform README** where macOS, Linux, and Windows instructions are integrated cleanly? It could make everything much easier to maintain.
-
----
-
 ## macOS Notes
 
 - ✅ **ADC & SA modes** work normally.
