@@ -99,7 +99,7 @@ Here's the **Windows usage section** to add to the README:
 
 ---
 
-## **Windows Usage**
+## **Windows Usage (using Powershell) **
 
 ### **1. Download the setup script**
 
@@ -110,8 +110,9 @@ curl -O https://raw.githubusercontent.com/paolobtl/google-analytics-mcp-installe
 ### **2. Run with Application Default Credentials (recommended)**
 
 ```powershell
-$env:GOOGLE_PROJECT_ID="my-project"
-.\setup-analytics-mcp.ps1
+.\setup-analytics-mcp.ps1 -GOOGLE_PROJECT_ID "my-project" -MODE adc
+# optional parameters:
+# -SA_NAME "mcp-analytics" -KEY_DIR "$HOME\keys" -KEY_PATH "C:\path\mcp.json"
 ```
 
 * Opens your browser for authentication.
@@ -123,9 +124,7 @@ $env:GOOGLE_PROJECT_ID="my-project"
 ### **3. Run with Service Account JSON**
 
 ```powershell
-$env:MODE="sa"
-$env:GOOGLE_PROJECT_ID="my-project"
-.\setup-analytics-mcp.ps1
+.\setup-analytics-mcp.ps1 -GOOGLE_PROJECT_ID "my-project" -MODE sa
 ```
 
 * Creates a Service Account if missing.
