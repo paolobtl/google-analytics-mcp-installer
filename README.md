@@ -99,9 +99,9 @@ Here's the **Windows usage section** to add to the README:
 
 ---
 
-## **Windows Usage (using Powershell) **
+## **Windows Usage**
 
-### **1. Download the setup script**
+### **1. Open _Powershell_ and download the setup script**
 
 ```powershell
 curl -O https://raw.githubusercontent.com/paolobtl/google-analytics-mcp-installer/refs/heads/main/setup-analytics-mcp.ps1
