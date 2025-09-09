@@ -5,13 +5,13 @@ Automated setup script to configure **Google Analytics MCP** for Gemini CLI.
 ##### Table of Contents
 - [Features](#features)
 - [Prerequisites](#prerequisites)
-- [Usage Linux/MacOSX](#usage-linuxmacosx)
+- [Linux/MacOSX Usage](#linuxmacosx-usage)
   - [1. Download the setup script](#1-download-the-setup-script)
   - [2. Run with Application Default Credentials (recommended)](#2-run-with-application-default-credentials-recommended)
   - [3. Run with Service Account JSON](#3-run-with-service-account-json)
   - [4. Optional arguments Linux](#4-optional-arguments-linux)
   - [5. Verify Gemini MCP Setup](#5-verify-gemini-mcp-setup)
-
+- [Windows Usage](#windows-usage)
 - [macOS Notes](#macos-notes)
 - [Troubleshooting](#troubleshooting)
 - [Security Notes](#security-notes)
@@ -42,7 +42,7 @@ Automated setup script to configure **Google Analytics MCP** for Gemini CLI.
 
 ---
 
-## Usage Linux/MacOSX
+## Linux/MacOSX Usage
 ### **1. Download the setup script**
 
 ```bash
@@ -89,9 +89,9 @@ You should see:
 ```
 🟢 analytics-mcp - Ready
 ```
-Here's the **Windows usage section** to add to the README:
+## Windows Usage
+  - WIP
 
----
 
 ## macOS Notes
 
