@@ -5,7 +5,7 @@ Automated setup script to configure **Google Analytics MCP** for Gemini CLI.
 ##### Table of Contents
 - [Features](#features)
 - [Prerequisites](#prerequisites)
-- [Usage](#usage)
+- [Usage Linux/MacOSX](#usage-linuxmacosx)
   - [1. Download the setup script](#1-download-the-setup-script)
   - [2. Run with Application Default Credentials (recommended)](#2-run-with-application-default-credentials-recommended)
   - [3. Run with Service Account JSON](#3-run-with-service-account-json)
@@ -42,8 +42,7 @@ Automated setup script to configure **Google Analytics MCP** for Gemini CLI.
 
 ---
 
-## Usage
-
+## Usage Linux/MacOSX
 ### **1. Download the setup script**
 
 ```bash
