@@ -411,6 +411,60 @@ Then re-run the installer.
 
 ---
 
+### "Currently authenticated with service account from different project"
+
+**Cause:** You're authenticated with gcloud using a service account from another (possibly deleted) project.
+
+**What the installer does:**
+- Detects if you're using a service account from a different project
+- Warns you about potential permission issues
+- Offers to continue or abort
+
+**Solution:** Switch to your personal account:
+
+```bash
+# See all authenticated accounts
+gcloud auth list
+
+# Revoke the old service account
+gcloud auth revoke OLD_SERVICE_ACCOUNT@project.iam.gserviceaccount.com
+
+# Login with your personal account
+gcloud auth login
+
+# Set the correct project
+gcloud config set project your-project-id
+
+# Re-run the installer
+GOOGLE_PROJECT_ID="your-project-id" ./setup-analytics-mcp.sh
+```
+
+---
+
+### "Cannot access project"
+
+**Cause:** The gcloud account doesn't have access to the specified project.
+
+**The installer automatically checks:**
+1. If the project exists
+2. If you have permission to access it
+3. If you're authenticated with the correct account
+
+**Solution:** Verify your authentication:
+
+```bash
+# Check active account
+gcloud auth list
+
+# Verify project access
+gcloud projects describe YOUR_PROJECT_ID
+
+# If needed, switch accounts
+gcloud config set account YOUR_EMAIL@gmail.com
+```
+
+---
+
 ### "gcloud not found"
 
 **Solution Option 1:** Install manually from [Google Cloud SDK](https://cloud.google.com/sdk/docs/install)

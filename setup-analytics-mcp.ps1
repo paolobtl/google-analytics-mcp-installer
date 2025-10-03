@@ -216,6 +216,75 @@ function Test-ValidJson {
     }
 }
 
+function Test-GcloudAuth {
+    param([string]$ProjectId)
+
+    if ($DRY_RUN) {
+        return $true
+    }
+
+    # Get active account
+    $activeAccount = gcloud auth list --filter=status:ACTIVE --format="value(account)" 2>$null | Select-Object -First 1
+
+    if (-not $activeAccount) {
+        Log-Warn "No active gcloud authentication found"
+        return $false
+    }
+
+    Log-Verbose "Active gcloud account: $activeAccount"
+
+    # Check if authenticated with service account from different project
+    if ($activeAccount -match "(.+)@(.+)\.iam\.gserviceaccount\.com") {
+        $saProject = $matches[2]
+
+        if ($saProject -ne $ProjectId) {
+            Log-Warn "Currently authenticated with service account from different project: $activeAccount"
+            Log-Warn "Target project: $ProjectId"
+            Log-Warn "This may cause permission errors"
+            Write-Host ""
+            Log-Info "To fix this, authenticate with your personal account:"
+            Log-Info "  gcloud auth revoke $activeAccount"
+            Log-Info "  gcloud auth login"
+            Log-Info "  gcloud config set project $ProjectId"
+            Write-Host ""
+
+            $response = Read-Host "Continue anyway? (y/N)"
+            if ($response -notmatch "^[Yy]$") {
+                throw "Aborted by user"
+            }
+        }
+    }
+
+    # Test if we can access the project
+    Log-Verbose "Verifying access to project $ProjectId..."
+    $null = gcloud projects describe $ProjectId 2>$null
+
+    if ($LASTEXITCODE -ne 0) {
+        Log-Error "Cannot access project: $ProjectId"
+        Log-Error "This could mean:"
+        Log-Error "  1. The project doesn't exist"
+        Log-Error "  2. You don't have permission to access it"
+        Log-Error "  3. You're authenticated with the wrong account"
+        Write-Host ""
+        Log-Info "Current active account: $activeAccount"
+        Write-Host ""
+        Log-Info "To fix authentication issues:"
+        Log-Info "  # See all authenticated accounts"
+        Log-Info "  gcloud auth list"
+        Write-Host ""
+        Log-Info "  # Switch to your personal account"
+        Log-Info "  gcloud config set account YOUR_EMAIL@gmail.com"
+        Write-Host ""
+        Log-Info "  # Or login fresh"
+        Log-Info "  gcloud auth login"
+        Write-Host ""
+        return $false
+    }
+
+    Log-Verbose "Project access verified"
+    return $true
+}
+
 # =============================================================
 # Help & Usage
 # =============================================================
@@ -499,6 +568,14 @@ function Invoke-Install {
     }
 
     Log-Success "All prerequisites satisfied"
+
+    # =============================================================
+    # Validate gcloud authentication
+    # =============================================================
+    Log-Info "Validating gcloud authentication..."
+    if (-not (Test-GcloudAuth -ProjectId $GOOGLE_PROJECT_ID)) {
+        throw "gcloud authentication validation failed"
+    }
 
     # =============================================================
     # Enable required APIs

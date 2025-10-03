@@ -258,10 +258,65 @@ validate_gcloud_auth() {
     return 0
   fi
 
-  if ! gcloud auth list --filter=status:ACTIVE --format="value(account)" | grep -q .; then
+  local active_account
+  active_account=$(gcloud auth list --filter=status:ACTIVE --format="value(account)" 2>/dev/null | head -n1)
+
+  if [[ -z "$active_account" ]]; then
     log_warn "No active gcloud authentication found"
     return 1
   fi
+
+  log_verbose "Active gcloud account: $active_account"
+
+  # Check if authenticated with a service account from a different/deleted project
+  if [[ "$active_account" == *"@"*".iam.gserviceaccount.com" ]]; then
+    local sa_project
+    sa_project=$(echo "$active_account" | sed 's/.*@\(.*\)\.iam\.gserviceaccount\.com/\1/')
+
+    if [[ "$sa_project" != "$GOOGLE_PROJECT_ID" ]]; then
+      log_warn "Currently authenticated with service account from different project: $active_account"
+      log_warn "Target project: $GOOGLE_PROJECT_ID"
+      log_warn "This may cause permission errors"
+      log_info ""
+      log_info "To fix this, authenticate with your personal account:"
+      log_info "  gcloud auth revoke $active_account"
+      log_info "  gcloud auth login"
+      log_info "  gcloud config set project $GOOGLE_PROJECT_ID"
+      log_info ""
+
+      read -p "Continue anyway? (y/N): " -n 1 -r
+      echo
+      if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        fail "Aborted by user"
+      fi
+    fi
+  fi
+
+  # Test if we can actually access the project
+  log_verbose "Verifying access to project $GOOGLE_PROJECT_ID..."
+  if ! gcloud projects describe "$GOOGLE_PROJECT_ID" >/dev/null 2>&1; then
+    log_error "Cannot access project: $GOOGLE_PROJECT_ID"
+    log_error "This could mean:"
+    log_error "  1. The project doesn't exist"
+    log_error "  2. You don't have permission to access it"
+    log_error "  3. You're authenticated with the wrong account"
+    log_info ""
+    log_info "Current active account: $active_account"
+    log_info ""
+    log_info "To fix authentication issues:"
+    log_info "  # See all authenticated accounts"
+    log_info "  gcloud auth list"
+    log_info ""
+    log_info "  # Switch to your personal account"
+    log_info "  gcloud config set account YOUR_EMAIL@gmail.com"
+    log_info ""
+    log_info "  # Or login fresh"
+    log_info "  gcloud auth login"
+    log_info ""
+    return 1
+  fi
+
+  log_verbose "Project access verified"
   return 0
 }
 
@@ -568,6 +623,12 @@ install_main() {
   fi
 
   log_success "All prerequisites satisfied"
+
+  # =============================================================
+  # Validate gcloud authentication
+  # =============================================================
+  log_info "Validating gcloud authentication..."
+  validate_gcloud_auth || fail "gcloud authentication validation failed"
 
   # =============================================================
   # Enable required APIs
