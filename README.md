@@ -713,7 +713,7 @@ https://github.com/paolobtl/google-analytics-mcp-installer
 
 ## License
 
-Apache 2.0
+[Apache 2.0](https://github.com/paolobtl/google-analytics-mcp-installer/blob/main/LICENSE)
 
 ---
 
